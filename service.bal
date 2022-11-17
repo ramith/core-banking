@@ -1,17 +1,22 @@
 import ballerina/http;
+import ballerina/log;
+
+
+public type VerificationStatus record {
+    string accountId;
+    string status;
+    string description;
+    string verifiedOn;
+};
 
 # A service representing a network-accessible API
 # bound to port `9090`.
 service / on new http:Listener(9090) {
 
-    # A resource for generating greetings
-    # + name - the input string name
-    # + return - string name with hello message or error
-    resource function get greeting(string name) returns string|error {
-        // Send a response back to the caller.
-        if name is "" {
-            return error("name should not be empty!");
-        }
-        return "Hello, " + name;
+    # A resource for storing customer verifications
+    # + status - verificaiton status of a customer
+    # + return - an eror or nothiing
+    resource function post customer/verification(@http:Payload VerificationStatus status) returns error? {
+        log:printInfo("varification status recieved", status = status);
     }
 }
